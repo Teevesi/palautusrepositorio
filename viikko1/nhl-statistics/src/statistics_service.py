@@ -1,3 +1,9 @@
+from enum import Enum
+
+class SortBy(Enum):
+    POINTS = 1
+    GOALS = 2
+    ASSISTS = 3
 
 class StatisticsService:
     def __init__(self, reader):
@@ -19,19 +25,25 @@ class StatisticsService:
 
         return list(players_of_team)
 
-    def top(self, how_many):
-        def sort_by_points(player):
-            return player.goals + player.assists
-
-        sorted_players = sorted(
-            self._players,
-            reverse=True,
-            key=sort_by_points
-        )
-
+    def top(self, how_many, method=SortBy.POINTS):
         # Handle the case where how_many is 0
         if how_many <= 0:
             return []
+
+        # Define sort key based on method
+        if method == SortBy.GOALS:
+            sort_key = lambda player: player.goals
+        elif method == SortBy.ASSISTS:
+            sort_key = lambda player: player.assists
+        else:  # default to POINTS
+            sort_key = lambda player: player.goals + player.assists
+
+        # Sort players using the selected key
+        sorted_players = sorted(
+            self._players,
+            reverse=True,
+            key=sort_key
+        )
 
         # Return at most how_many players
         return sorted_players[:min(how_many, len(sorted_players))]

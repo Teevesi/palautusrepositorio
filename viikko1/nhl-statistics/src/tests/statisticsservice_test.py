@@ -7,7 +7,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_path = os.path.join(dir_path, "..")
 sys.path.insert(0, parent_path)
 
-from statistics_service import StatisticsService
+from statistics_service import StatisticsService, SortBy
 from player import Player
 
 class PlayerReaderStub:
@@ -55,14 +55,32 @@ class TestStatisticsService(unittest.TestCase):
         top_players = self.stats.top(3)
         self.assertEqual(len(top_players), 3)
 
-    def test_top_returns_players_in_correct_order(self):
-        top_players = self.stats.top(5)
+    def test_top_returns_players_by_points_in_correct_order(self):
+        top_players = self.stats.top(5)  # Default sorting by points
         
         self.assertEqual(top_players[0].name, "Gretzky")  # 35 + 89 = 124
         self.assertEqual(top_players[1].name, "Lemieux")  # 45 + 54 = 99
         self.assertEqual(top_players[2].name, "Yzerman") # 42 + 56 = 98
         self.assertEqual(top_players[3].name, "Kurri")   # 37 + 53 = 90
         self.assertEqual(top_players[4].name, "Semenko") # 4 + 12 = 16
+
+    def test_top_returns_players_by_goals_in_correct_order(self):
+        top_players = self.stats.top(5, SortBy.GOALS)
+        
+        self.assertEqual(top_players[0].name, "Lemieux")  # 45 goals
+        self.assertEqual(top_players[1].name, "Yzerman") # 42 goals
+        self.assertEqual(top_players[2].name, "Kurri")   # 37 goals
+        self.assertEqual(top_players[3].name, "Gretzky") # 35 goals
+        self.assertEqual(top_players[4].name, "Semenko") # 4 goals
+
+    def test_top_returns_players_by_assists_in_correct_order(self):
+        top_players = self.stats.top(5, SortBy.ASSISTS)
+        
+        self.assertEqual(top_players[0].name, "Gretzky")  # 89 assists
+        self.assertEqual(top_players[1].name, "Yzerman") # 56 assists
+        self.assertEqual(top_players[2].name, "Lemieux") # 54 assists
+        self.assertEqual(top_players[3].name, "Kurri")   # 53 assists
+        self.assertEqual(top_players[4].name, "Semenko") # 12 assists
 
     def test_top_handles_zero_players_request(self):
         top_players = self.stats.top(0)

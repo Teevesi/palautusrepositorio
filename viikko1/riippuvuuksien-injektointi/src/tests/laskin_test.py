@@ -1,4 +1,11 @@
 import unittest
+import os
+import sys
+
+# Add the parent directory (src) to the Python path
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_path = os.path.join(dir_path, "..")
+sys.path.insert(0, parent_path)
 
 from src.laskin import Laskin
 

@@ -11,9 +11,4 @@ y = int(input("luku 2: "))
 print(f"{x} + {y} = {summa(x, y)}") # muutos mainissa
 print(f"{x} - {y} = {erotus(x, y)}") # muutos mainissa
 
-<<<<<<< HEAD
 logger("lopetetaan ohjelma")
-=======
-logger("lopetetaan ohjelma")
-print("goodbye!") # lisäys bugikorjaus-branchissa
->>>>>>> bugikorjaus

@@ -1,7 +1,7 @@
 import requests
-from player import Player
 from rich.console import Console
 from rich.table import Table
+from player import Player
 
 def main():
     user_input = UserInput()
@@ -42,17 +42,17 @@ class PlayerReader:
         self.url = url
         self.players = []
         self.nationalities = set()
-        
+
     def get_players(self):
-        response = requests.get(self.url).json()
+        response = requests.get(self.url, timeout=5).json()
 
         for player in response:
             self.players.append(Player(player))
 
         return self.players
-    
+
     def get_nationalities(self):
-        response = requests.get(self.url).json()
+        response = requests.get(self.url, timeout=5).json()
 
         for player in response:
             self.nationalities.add(player['nationality'])
@@ -71,6 +71,9 @@ class PlayerStats:
         filtered_players.sort(key=lambda p: p.goals + p.assists, reverse=True)
         top10 = filtered_players[:10]
         return top10
+
+    def hmm(self):
+        pass
 
 class PlayerTable:
 
@@ -97,10 +100,8 @@ class PlayerTable:
             )
         self.console.print(self.table)
 
-
-
-
-
+    def hmm(self):
+        pass
 
 
 

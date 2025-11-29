@@ -37,9 +37,7 @@ class TennisGame:
         return "Deuce"
 
     def is_tied(self, p1_score, p2_score):
-        if p1_score == p2_score:
-            return True
-        return False
+        return p1_score == p2_score
 
     def score_advantage(self, p1_score, p2_score):
         if p1_score > p2_score:

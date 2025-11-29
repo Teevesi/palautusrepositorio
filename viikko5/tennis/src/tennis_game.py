@@ -19,8 +19,9 @@ class TennisGame:
             return self.return_tied_score(self.p1_score)
         
         if self.p1_score >= 4 or self.p2_score >= 4:
-            if self.check_win(self.p1_score, self.p2_score) != 0:
-                return self.check_win(self.p1_score, self.p2_score)
+            win_result = self.check_win(self.p1_score, self.p2_score)
+            if win_result != 0:
+                return win_result
             return self.score_advantage(self.p1_score, self.p2_score)
         else:
             return f"{self.score_to_tennis_score(self.p1_score)}-{self.score_to_tennis_score(self.p2_score)}"

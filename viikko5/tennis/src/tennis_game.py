@@ -11,7 +11,7 @@ class TennisGame:
         elif self.p2_name == player_name:
             self.p2_score = self.p2_score + 1
         else:
-            print("Player not found")
+            raise ValueError("Player not found")
     
     def get_score(self):
 

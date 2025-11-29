@@ -1,55 +1,53 @@
 class TennisGame:
     def __init__(self, player1_name, player2_name):
-        self.player1_name = player1_name
-        self.player2_name = player2_name
-        self.m_score1 = 0
-        self.m_score2 = 0
+        self.p1_name = player1_name
+        self.p2_name = player2_name
+        self.p1_score = 0
+        self.p2_score = 0
 
     def won_point(self, player_name):
-        if player_name == "player1":
-            self.m_score1 = self.m_score1 + 1
+        if self.p1_name == player_name:
+            self.p1_score = self.p1_score + 1
+        elif self.p2_name == player_name:
+            self.p2_score = self.p2_score + 1
         else:
-            self.m_score2 = self.m_score2 + 1
-
+            raise ValueError("Player not found")
+    
     def get_score(self):
-        score = ""
-        temp_score = 0
 
-        if self.m_score1 == self.m_score2:
-            if self.m_score1 == 0:
-                score = "Love-All"
-            elif self.m_score1 == 1:
-                score = "Fifteen-All"
-            elif self.m_score1 == 2:
-                score = "Thirty-All"
-            else:
-                score = "Deuce"
-        elif self.m_score1 >= 4 or self.m_score2 >= 4:
-            minus_result = self.m_score1 - self. m_score2
-
-            if minus_result == 1:
-                score = "Advantage player1"
-            elif minus_result == -1:
-                score = "Advantage player2"
-            elif minus_result >= 2:
-                score = "Win for player1"
-            else:
-                score = "Win for player2"
+        if self.is_tied(self.p1_score, self.p2_score):
+            return self.return_tied_score(self.p1_score)
+        
+        if self.p1_score >= 4 or self.p2_score >= 4:
+            win_result = self.check_win(self.p1_score, self.p2_score)
+            if win_result != 0:
+                return win_result
+            return self.score_advantage(self.p1_score, self.p2_score)
         else:
-            for i in range(1, 3):
-                if i == 1:
-                    temp_score = self.m_score1
-                else:
-                    score = score + "-"
-                    temp_score = self.m_score2
+            return f"{self.score_to_tennis_score(self.p1_score)}-{self.score_to_tennis_score(self.p2_score)}"
+    
+    def score_to_tennis_score(self, score):
+        score_list = ["Love", "Fifteen", "Thirty", "Forty"]
+        return score_list[score]
 
-                if temp_score == 0:
-                    score = score + "Love"
-                elif temp_score == 1:
-                    score = score + "Fifteen"
-                elif temp_score == 2:
-                    score = score + "Thirty"
-                elif temp_score == 3:
-                    score = score + "Forty"
+    def return_tied_score(self, score):
+        score_list = ["Love-All", "Fifteen-All", "Thirty-All"]
+        if score <= 2:
+            return score_list[score]
+        return "Deuce"
 
-        return score
+    def is_tied(self, p1_score, p2_score):
+        return p1_score == p2_score
+
+    def score_advantage(self, p1_score, p2_score):
+        if p1_score > p2_score:
+            return "Advantage player1"
+        return "Advantage player2"
+
+    def check_win(self, p1_score, p2_score):
+        if p1_score >= p2_score + 2:
+            return "Win for player1"
+        elif p2_score >= p1_score + 2:
+            return "Win for player2"
+        else:
+            return 0

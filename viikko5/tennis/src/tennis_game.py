@@ -15,7 +15,7 @@ class TennisGame:
     
     def get_score(self):
 
-        if self.is_tied(self.p1_score, self.p2_score) is True:
+        if self.is_tied(self.p1_score, self.p2_score):
             return self.return_tied_score(self.p1_score)
         
         if self.p1_score >= 4 or self.p2_score >= 4:

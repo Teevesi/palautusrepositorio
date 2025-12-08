@@ -11,16 +11,17 @@ class TennisGame:
         elif self.p2_name == player_name:
             self.p2_score = self.p2_score + 1
         else:
-            print("Player not found")
+            raise ValueError("Player not found")
     
     def get_score(self):
 
-        if self.is_tied(self.p1_score, self.p2_score) is True:
+        if self.is_tied(self.p1_score, self.p2_score):
             return self.return_tied_score(self.p1_score)
         
         if self.p1_score >= 4 or self.p2_score >= 4:
-            if self.check_win(self.p1_score, self.p2_score) != 0:
-                return self.check_win(self.p1_score, self.p2_score)
+            win_result = self.check_win(self.p1_score, self.p2_score)
+            if win_result != 0:
+                return win_result
             return self.score_advantage(self.p1_score, self.p2_score)
         else:
             return f"{self.score_to_tennis_score(self.p1_score)}-{self.score_to_tennis_score(self.p2_score)}"
@@ -36,9 +37,7 @@ class TennisGame:
         return "Deuce"
 
     def is_tied(self, p1_score, p2_score):
-        if p1_score == p2_score:
-            return True
-        return False
+        return p1_score == p2_score
 
     def score_advantage(self, p1_score, p2_score):
         if p1_score > p2_score:
